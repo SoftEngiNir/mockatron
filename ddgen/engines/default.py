@@ -1,13 +1,17 @@
-from ._int import IntRandEngine
-from ._str import StrRandEngine
-from ._date import DateRandEngine, DateTimeRandEngine
-from ddgen.enums import DataType
-from typing import Final, Dict
-from ..engines.base import Engine
+from __future__ import annotations
 
-DEFAULT_ENGINES: Final[Dict[DataType, Engine]] = {
-    DataType._int: IntRandEngine,
-    DataType._str: StrRandEngine,
-    DataType._date: DateRandEngine,
-    DataType._datetime: DateTimeRandEngine,
+from typing import Final
+
+from ddgen.engines._date import DateRandEngine
+from ddgen.engines._date import DateTimeRandEngine
+from ddgen.engines._int import IntRandEngine
+from ddgen.engines._str import StrRandEngine
+from ddgen.engines.base import RandEngine
+from ddgen.enums import DataType
+
+DEFAULT_ENGINES: Final[dict[DataType, RandEngine]] = {
+    DataType._int: IntRandEngine,  # type: ignore
+    DataType._str: StrRandEngine,  # type: ignore
+    DataType._date: DateRandEngine,  # type: ignore
+    DataType._datetime: DateTimeRandEngine,  # type: ignore
 }

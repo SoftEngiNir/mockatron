@@ -1,28 +1,26 @@
-from ddgen.schema.column import Column
-from typing import List, Iterator
-from ddgen.helper_functions import generate_uuid_as_str
+from __future__ import annotations
 
-class TableSchema:
-    def __init__(self, name: str, columns: List[Column] = []):
+from collections.abc import Iterator
+from collections.abc import Sequence
+
+from ddgen.schema.column import BaseColumn
+from ddgen.utilities.helper_functions import generate_uuid_as_str
+
+
+class Table:
+    def __init__(self, name: str, columns: Sequence[BaseColumn] = [], schema: str | None = None):
         self.id = generate_uuid_as_str()
         self.name = name
+        self.foreign_keys: Sequence[BaseColumn] = []
+        self.primary_key: BaseColumn | None = None
         self.columns = [self.add_column(col) for col in columns]
+        self.schema = schema
 
-    def add_column(self, column: Column):
-        column.table = self
-        return column
+    def add_column(self, column: BaseColumn):
+        return column.add(self)
 
     def __repr__(self):
-        return f"{self.name}"
+        return f'{self.name}'
 
-    def __iter__(self) -> Iterator[Column]:
+    def __iter__(self) -> Iterator[BaseColumn]:
         return iter(self.columns)
-    
-    # def __hash__(self):
-    #     return hash((self.id))
-
-    # def __eq__(self, other):
-    #     if isinstance(other, TableSchema):
-    #         return self.id == other.id 
-    #     return False
-

@@ -1,5 +1,8 @@
-import numpy as np
+from __future__ import annotations
+
 import uuid
+
+import numpy as np
 
 
 def sample_from_array(array, size, replace) -> np.ndarray:
@@ -9,11 +12,9 @@ def sample_from_array(array, size, replace) -> np.ndarray:
 def generate_uuid_as_str():
     return str(uuid.uuid4())
 
+
 def generate_int_primary_key():
     key = 0
     while True:
         key += 1
         yield key
-
-
-
