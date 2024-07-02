@@ -8,7 +8,7 @@ from ddgen.utilities.helper_functions import generate_uuid_as_str
 
 
 class Table:
-    def __init__(self, name: str, columns: Sequence[BaseColumn] = [], schema: str | None = None):
+    def __init__(self, name: str, columns: Sequence[BaseColumn] = [], schema: str | None = None) -> None:
         self.id = generate_uuid_as_str()
         self.name = name
         self.foreign_keys: Sequence[BaseColumn] = []
@@ -16,7 +16,7 @@ class Table:
         self.columns = [self.add_column(col) for col in columns]
         self.schema = schema
 
-    def add_column(self, column: BaseColumn):
+    def add_column(self, column: BaseColumn) -> BaseColumn:
         return column.add(self)
 
     def __repr__(self):
