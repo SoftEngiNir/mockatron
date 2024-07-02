@@ -2,9 +2,7 @@ from __future__ import annotations
 
 import string
 
-from ddgen.engines.base import Engine
-from ddgen.engines.base import FakerEngine
-from ddgen.engines.base import RandEngine
+from ddgen.engines.base import Engine, FakerEngine, RandEngine
 from ddgen.utilities.helper_functions import generate_uuid_as_str
 
 

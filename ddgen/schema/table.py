@@ -1,14 +1,18 @@
 from __future__ import annotations
 
-from collections.abc import Iterator
-from collections.abc import Sequence
+from collections.abc import Iterator, Sequence
 
 from ddgen.schema.column import BaseColumn
 from ddgen.utilities.helper_functions import generate_uuid_as_str
 
 
 class Table:
-    def __init__(self, name: str, columns: Sequence[BaseColumn] = [], schema: str | None = None) -> None:
+    def __init__(
+        self,
+        name: str,
+        columns: Sequence[BaseColumn] = [],
+        schema: str = 'public',
+    ) -> None:
         self.id = generate_uuid_as_str()
         self.name = name
         self.foreign_keys: Sequence[BaseColumn] = []

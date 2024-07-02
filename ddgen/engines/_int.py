@@ -1,7 +1,6 @@
 from __future__ import annotations
 
-from ddgen.engines.base import Engine
-from ddgen.engines.base import RandEngine
+from ddgen.engines.base import Engine, RandEngine
 from ddgen.utilities.helper_functions import generate_int_primary_key
 
 

@@ -1,23 +1,22 @@
 from __future__ import annotations
 
 from ddgen.dummy_generator.generator import DummyGenerator
-from ddgen.engines._int import IntPrimaryKeyEngine
-from ddgen.engines._int import IntRandEngine
+from ddgen.engines._int import IntPrimaryKeyEngine, IntRandEngine
 from ddgen.engines._numerical import NumericalNormalDistEngine
-from ddgen.engines._str import StrFromListEngine
-from ddgen.engines._str import StrNameEngine
+from ddgen.engines._str import StrFromListEngine, StrNameEngine
 from ddgen.enums import DataType
-from ddgen.schema.column import Column
-from ddgen.schema.column import ForeignKey
+from ddgen.schema.column import Column, ForeignKey
 from ddgen.schema.database import Database
 from ddgen.schema.table import Table
-from ddgen.utilities.writers import csv_dump
+from ddgen.utilities.connection import TEST_ENGINE, session_context
+from ddgen.utilities.sql import execute_raw_sql, get_ddl
+from ddgen.utilities.writers import csv_dump, db_dump
 
 # from ddgen.utilities.graph import construct_graph
 # from ddgen.utilities.graph import vizualize_graph
 
 # User Columns
-user_id = Column('id', DataType._int, engine=IntPrimaryKeyEngine())
+user_id = Column('id', DataType._int, engine=IntPrimaryKeyEngine(), is_primary=True)
 user_name = Column('name', DataType._str, engine=StrNameEngine())
 user_age = Column(
     'age',
@@ -29,10 +28,10 @@ user_age = Column(
 user_creation_date = Column('creation_date', DataType._date)
 USER_COLUMNS = [user_id, user_name, user_age, user_creation_date]
 # User table
-USER_TABLE = Table('user', columns=USER_COLUMNS)
+USER_TABLE = Table('users', columns=USER_COLUMNS)
 
 
-product_id = Column('id', DataType._int, engine=IntPrimaryKeyEngine())
+product_id = Column('id', DataType._int, engine=IntPrimaryKeyEngine(), is_primary=True)
 product_name = Column('name', DataType._str)
 product_price = Column(
     'price',
@@ -44,7 +43,7 @@ PRODUCT_COLUMNS = [product_id, product_name, product_price]
 PRODUCT_TABLE = Table('product', columns=PRODUCT_COLUMNS)
 
 
-category_id = Column('id', DataType._int, engine=IntPrimaryKeyEngine())
+category_id = Column('id', DataType._int, engine=IntPrimaryKeyEngine(), is_primary=True)
 category_name = Column(
     'name',
     DataType._str,
@@ -57,7 +56,12 @@ CATEGORY_COLUMNS = [category_id, category_name]
 CATEGORY_TABLE = Table('category', columns=CATEGORY_COLUMNS)
 
 
-product_category_id = Column('id', DataType._int, engine=IntPrimaryKeyEngine())
+product_category_id = Column(
+    'id',
+    DataType._int,
+    engine=IntPrimaryKeyEngine(),
+    is_primary=True,
+)
 fk_category_id = ForeignKey('category_id', category_id)
 fk_product_id = ForeignKey('product_id', product_id)
 
@@ -70,18 +74,18 @@ PRODUCT_CATEGORY_TABLE = Table(
 )
 
 
-order_id = Column('id', DataType._int, engine=IntPrimaryKeyEngine())
+order_id = Column('id', DataType._int, engine=IntPrimaryKeyEngine(), is_primary=True)
 fk_user_id = ForeignKey('user_id', user_id)
 fk_order_product_id = ForeignKey('product_id', product_id)
 order_datetime = Column('order_datetime', DataType._datetime)
 
 ORDER_COLUMNS = [order_id, fk_user_id, fk_order_product_id, order_datetime]
 # Order table
-ORDER_TABLE = Table('order', columns=ORDER_COLUMNS)
+ORDER_TABLE = Table('orders', columns=ORDER_COLUMNS)
 
 
 # Schema definition
-db_schema = Database(
+database = Database(
     'public',
     tables=[
         USER_TABLE,
@@ -92,20 +96,25 @@ db_schema = Database(
     ],
 )
 
-
 table_n_rows = {
-    USER_TABLE: 10,
+    USER_TABLE: 100,
     PRODUCT_TABLE: 15,
     CATEGORY_TABLE: 4,
     PRODUCT_CATEGORY_TABLE: 40,
     ORDER_TABLE: 300,
 }
 
-
-ddgen = DummyGenerator(db_schema)
+ddgen = DummyGenerator(database)
 ddgen.generate(table_n_rows)
 path = 'dummy_data'
-csv_dump(path, ddgen)
+csv_dump(path, database)
+
+with session_context(engine=TEST_ENGINE) as session:
+    ddl = get_ddl(database)
+    execute_raw_sql(session, ddl)
+
+db_dump(TEST_ENGINE, database)
+
 
 # graph = construct_graph(db_schema.graph_dict)
 # vizualize_graph(graph)

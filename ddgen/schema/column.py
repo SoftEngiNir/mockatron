@@ -1,18 +1,18 @@
 from __future__ import annotations
 
-from abc import ABC
-from abc import abstractmethod
+from abc import ABC, abstractmethod
+from typing import TYPE_CHECKING
 
 import numpy as np
 
-from ddgen.dummy_generator.utils import add_nones
-from ddgen.dummy_generator.utils import data_from_engine
-from ddgen.dummy_generator.utils import fk_data
+from ddgen.dummy_generator.utils import add_nones, data_from_engine, fk_data
 from ddgen.engines.base import Engine
-from ddgen.engines.default import DataType
-from ddgen.engines.default import DEFAULT_ENGINES
+from ddgen.engines.default import DEFAULT_ENGINES, DataType
 from ddgen.enums import RelationshipType
 from ddgen.utilities.helper_functions import generate_uuid_as_str
+
+if TYPE_CHECKING:
+    from ddgen.schema.table import Table
 
 
 class BaseColumn(ABC):
@@ -31,7 +31,7 @@ class BaseColumn(ABC):
         self.is_nullable = is_nullable
         self.percentage = percentage
         self.data = None
-        self.table = None
+        self.table: Table | None = None
 
     @abstractmethod
     def generate_data(self, n_rows: int) -> np.ndarray:

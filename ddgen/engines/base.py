@@ -1,8 +1,7 @@
 from __future__ import annotations
 
 from random import Random
-from typing import Generic
-from typing import TypeVar
+from typing import Generic, TypeVar
 
 import numpy as np
 from faker import Faker

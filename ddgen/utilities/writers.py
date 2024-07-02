@@ -1,12 +1,30 @@
 from __future__ import annotations
 
 import pandas as pd
+from sqlalchemy.engine import Engine
 
-from ddgen.dummy_generator.generator import DummyGenerator
+from ddgen.schema.database import Database
+from ddgen.schema.table import Table
 
 
-def csv_dump(path: str, ddgen: DummyGenerator):
-    for table in ddgen.database:
-        table_data = {key: ddgen.data_dict[key] for key in table.columns}
-        table_df = pd.DataFrame(table_data)
+def to_df(table: Table) -> pd.DataFrame:
+    table_data = {col: col.data for col in table.columns}
+    return pd.DataFrame(table_data)
+
+
+def csv_dump(path: str, database: Database) -> None:
+    for table in database:
+        table_df = to_df(table)
         table_df.to_csv(f'{path}/{table.name}.csv', index=False)
+
+
+def db_dump(engine: Engine, database: Database) -> None:
+    for table in database.tables:
+        df = to_df(table)
+        df.to_sql(
+            name=table.name,
+            con=engine,
+            schema=table.schema,
+            if_exists='append',
+            index=False,
+        )

@@ -1,13 +1,11 @@
 from __future__ import annotations
 
 import random
-from typing import Callable
-from typing import Final
+from typing import Callable, Final
 
 import numpy as np
 
-from ddgen.engines.base import ArrayEngine
-from ddgen.engines.base import Engine
+from ddgen.engines.base import ArrayEngine, Engine
 from ddgen.enums import RelationshipType
 from ddgen.utilities.helper_functions import sample_from_array
 

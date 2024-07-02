@@ -4,13 +4,10 @@ from datetime import date
 
 from ddgen.dummy_generator.generator import DummyGenerator
 from ddgen.engines._date import DateRandEngine
-from ddgen.engines._int import IntPrimaryKeyEngine
-from ddgen.engines._int import IntRandEngine
-from ddgen.engines._str import StrNameEngine
-from ddgen.engines._str import StrUuidEngine
+from ddgen.engines._int import IntPrimaryKeyEngine, IntRandEngine
+from ddgen.engines._str import StrNameEngine, StrUuidEngine
 from ddgen.enums import DataType
-from ddgen.schema.column import Column
-from ddgen.schema.column import ForeignKey
+from ddgen.schema.column import Column, ForeignKey
 from ddgen.schema.database import Database
 from ddgen.schema.table import Table
 from ddgen.utilities.writers import csv_dump
@@ -64,7 +61,7 @@ PURCHASE_TABLE = Table(
 
 
 # Schema definition
-db_schema = Database(
+database = Database(
     'public',
     tables=[USER_TABLE, PURCHASE_TABLE],
 )
@@ -72,7 +69,7 @@ db_schema = Database(
 table_n_rows = {USER_TABLE: 300, PURCHASE_TABLE: 30}
 
 
-ddgen = DummyGenerator(db_schema)
+ddgen = DummyGenerator(database)
 ddgen.generate(table_n_rows)
 path = 'dummy_data'
-csv_dump(path, ddgen)
+csv_dump(path, database)

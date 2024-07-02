@@ -2,8 +2,7 @@ from __future__ import annotations
 
 from typing import Final
 
-from ddgen.engines._date import DateRandEngine
-from ddgen.engines._date import DateTimeRandEngine
+from ddgen.engines._date import DateRandEngine, DateTimeRandEngine
 from ddgen.engines._int import IntRandEngine
 from ddgen.engines._str import StrRandEngine
 from ddgen.engines.base import RandEngine
