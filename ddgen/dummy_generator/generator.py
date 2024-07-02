@@ -8,13 +8,13 @@ from ddgen.schema.table import Table
 
 
 class DummyGenerator:
-    def __init__(self, db_schema: Database) -> None:
-        self.db_schema = db_schema
+    def __init__(self, database: Database) -> None:
+        self.database = database
         self.data_dict: dict[BaseColumn, np.ndarray] = {}
         pass
 
     def generate(self, table_nrows: dict[Table, int] = {}):
-        table_dependencies = self.db_schema.get_table_dependencies()
+        table_dependencies = self.database.get_table_dependencies()
         for _, tables in table_dependencies.items():
             for table in tables:
                 n_rows = table_nrows[table]
