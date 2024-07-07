@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from collections.abc import Iterator, Sequence
 
-from ddgen.schema.column import BaseColumn
+from ddgen.schema.base_column import BaseColumn
 from ddgen.utilities.helper_functions import generate_uuid_as_str
 
 

@@ -5,7 +5,7 @@ from collections import defaultdict
 import matplotlib.pyplot as plt
 import networkx as nx
 
-from ddgen.schema.column import BaseColumn
+from ddgen.schema.base_column import BaseColumn
 from ddgen.schema.table import Table
 
 

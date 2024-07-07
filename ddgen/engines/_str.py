@@ -24,6 +24,26 @@ class StrNameEngine(FakerEngine[str]):
         return self._engine.name()
 
 
+class StrAdressEngine(FakerEngine[str]):
+    def sample(self):
+        return self._engine.address()
+
+
+class StrTextEngine(FakerEngine[str]):
+    def sample(self):
+        return self._engine.text()
+
+
+class StrIPv4Engine(FakerEngine[str]):
+    def sample(self):
+        return self._engine.ipv4_private()
+
+
+class StrEmailEngine(FakerEngine[str]):
+    def sample(self):
+        return self._engine.email()
+
+
 class StrUuidEngine(Engine[str]):
     def sample(self):
         return generate_uuid_as_str()

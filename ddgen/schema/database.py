@@ -3,7 +3,8 @@ from __future__ import annotations
 from collections import defaultdict
 from collections.abc import Iterator
 
-from ddgen.schema.column import BaseColumn, ForeignKey
+from ddgen.schema.base_column import BaseColumn
+from ddgen.schema.column import ForeignKey
 from ddgen.schema.table import Table
 from ddgen.utilities.graph import construct_graph, sorted_in_degree
 

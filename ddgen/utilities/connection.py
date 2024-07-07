@@ -34,14 +34,3 @@ def session_context(engine) -> Generator[Session, None, None]:
         raise
     finally:
         session.close()
-
-
-TEST_DB_CNXT = ConnectionDetails(
-    username='postgres',
-    host='localhost',
-    port=26552,
-    dbname='postgres',
-    password='test',
-)
-
-TEST_ENGINE = create_engine_postgres(TEST_DB_CNXT)

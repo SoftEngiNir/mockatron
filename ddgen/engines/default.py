@@ -8,7 +8,7 @@ from ddgen.engines._str import StrRandEngine
 from ddgen.engines.base import RandEngine
 from ddgen.enums import DataType
 
-DEFAULT_ENGINES: Final[dict[DataType, RandEngine]] = {
+DEFAULT_ENGINES: Final[dict[DataType, type[RandEngine]]] = {
     DataType._int: IntRandEngine,  # type: ignore
     DataType._str: StrRandEngine,  # type: ignore
     DataType._date: DateRandEngine,  # type: ignore

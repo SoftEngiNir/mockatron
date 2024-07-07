@@ -13,20 +13,38 @@ class Engine(Generic[T]):
     def sample(self):
         raise NotImplementedError('Not implemented')
 
+    def set_seed(self, seed):
+        self.seed = seed
+
 
 class RandEngine(Engine[T]):
     def __init__(self) -> None:
         self._engine = Random()
+
+    def set_seed(self, seed):
+        super().set_seed(seed)
+        self._engine.seed(self.seed)
+        return self
 
 
 class FakerEngine(Engine[T]):
     def __init__(self) -> None:
         self._engine = Faker()
 
+    def set_seed(self, seed):
+        super().set_seed(seed)
+        Faker.seed(seed)
+        return self
+
 
 class NumpyEngine(Engine[T]):
     def __init__(self) -> None:
         self._engine = np.random
+
+    def set_seed(self, seed):
+        super().set_seed(seed)
+        self._engine.seed(self.seed)
+        return self
 
 
 class ArrayEngine(Engine[list[T]]):
