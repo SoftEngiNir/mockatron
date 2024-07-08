@@ -1,0 +1,103 @@
+{
+    "tables": [
+      {
+        "name": "users",
+        "columns": [
+          {
+            "name": "id",
+            "dtype": "integer",
+            "is_primary": true,
+            "engine": {
+                "name": "IntPrimaryKeyEngine"
+            }
+          },
+          {
+            "name": "name",
+            "dtype": "string",
+            "engine": {
+                "name": "StrNameEngine"
+            }
+          },
+          {
+            "name": "email",
+            "dtype": "string",
+            "engine": {
+                "name": "StrEmailEngine"
+            }
+          }
+          ,
+          {
+            "name": "created_at",
+            "dtype": "timestamp",
+            "engine": {
+                "name": "DateTimeRandEngine",
+                "config": {
+                    "start_datetime": "2000-01-01T01:00:00+0000",
+                    "end_datetime": "2024-07-07T18:22:39+0000"
+                }
+            }
+          }
+        ]
+      },
+      {
+        "name": "products",
+        "columns": [
+            {
+                "name": "id",
+                "dtype": "integer",
+                "is_primary": true,
+                "engine": {
+                    "name": "IntPrimaryKeyEngine"
+                }
+              },
+              {
+                "name": "name",
+                "dtype": "string",
+                "engine": {
+                    "name": "StrNameEngine"
+                }
+              },
+              {
+                "name": "price",
+                "dtype": "integer",
+                "engine": {
+                    "name": "NumericalNormalDistEngine",
+                    "config": {
+                        "mean": 100,
+                        "std": 10
+                    }
+                }
+              }
+        ]
+      },
+      {
+        "name": "orders",
+        "columns": [
+            {
+                "name": "id",
+                "dtype": "integer",
+                "is_primary": true,
+                "engine": {
+                    "name": "IntPrimaryKeyEngine"
+                }
+              },
+              {
+                "name": "user_id",
+                "dtype": "integer",
+                "foreign_key": {
+                    "table": "users",
+                    "source_col": "id"
+                }
+              },
+              {
+                "name": "product_id",
+                "dtype": "integer",
+                "foreign_key": {
+                    "table": "products",
+                    "source_col": "id"
+                }
+              }
+        ]
+      }
+    ]
+  }

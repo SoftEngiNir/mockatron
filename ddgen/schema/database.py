@@ -3,7 +3,6 @@ from __future__ import annotations
 from collections import defaultdict
 from collections.abc import Iterator
 
-from ddgen.schema.base_column import BaseColumn
 from ddgen.schema.column import ForeignKey
 from ddgen.schema.table import Table
 from ddgen.utilities.graph import construct_graph, sorted_in_degree
@@ -12,11 +11,12 @@ from ddgen.utilities.graph import construct_graph, sorted_in_degree
 class Database:
     def __init__(
         self,
-        schema_name: str,
+        schema: str,
         tables: list[Table] = [],
     ) -> None:
-        self.schema_name = schema_name
-        self.graph_dict: dict[BaseColumn, list[BaseColumn]] = defaultdict(list)
+        self.schema = schema
+        self.graph_dict: dict[Table, list[Table]] = defaultdict(list)
+        self.tables = []
         self.tables = [self.add_table(table) for table in tables]
 
     def __iter__(self) -> Iterator[Table]:
@@ -25,10 +25,13 @@ class Database:
     def _add_fk_relationships(self, table):
         for column in table:
             if isinstance(column, ForeignKey):
-                self.graph_dict[column.source_col].append(column)
+                self.graph_dict[column.source_col.table].append(column.table)
 
     def add_table(self, table: Table):
-        table.schema = self.schema_name
+        table.schema = self.schema
+        self.tables.append(table)
+        if table not in self.graph_dict.keys():
+            self.graph_dict[table] = []
         self._add_fk_relationships(table)
         return table
 

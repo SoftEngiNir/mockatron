@@ -27,8 +27,8 @@ def data_from_engine(engine: Engine, n_rows: int) -> np.ndarray:
     return np.array(a_eng.sample())
 
 
-def fk_data(from_data: np.ndarray, n_rows: int, r_type: RelationshipType) -> np.ndarray:
-    config = RELATIONSHIP_CONFIGS[r_type]
+def fk_data(from_data: np.ndarray, n_rows: int, rtype: RelationshipType) -> np.ndarray:
+    config = RELATIONSHIP_CONFIGS[rtype]
     func, kwargs = config['func'], config['kwargs']
     return func(from_data, n_rows, **kwargs)
 
@@ -73,10 +73,10 @@ def related_data(column: RelatedColumn, n_rows: int) -> np.ndarray:
     source_pk_data = column.source_pk.data if column.source_pk else None
     source_data = column.source_col.data
     if source_pk_data is not None and source_pk_data.any() and source_data.any():
-        np_type = NUMPY_DTYPE.get(column.source_col.col_type)
+        np_type = NUMPY_DTYPE.get(column.source_col.dtype)
         source_data = source_data.astype(np_type)
         target_fk_data = column.get_fk_col().data
-        config = RELATIONSHIP_CONFIGS[column.r_type]
+        config = RELATIONSHIP_CONFIGS[column.rtype]
         func, kwargs = config['func'], config['kwargs']
         return func(source_data, source_pk_data, target_fk_data, **kwargs)
     return np.array([None] * n_rows)

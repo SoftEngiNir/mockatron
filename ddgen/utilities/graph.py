@@ -5,15 +5,15 @@ from collections import defaultdict
 import matplotlib.pyplot as plt
 import networkx as nx
 
-from ddgen.schema.base_column import BaseColumn
 from ddgen.schema.table import Table
 
 
-def construct_graph(graph_dict: dict[BaseColumn, list[BaseColumn]]) -> nx.DiGraph:
+def construct_graph(graph_dict: dict[Table, list[Table]]) -> nx.DiGraph:
     G = nx.DiGraph()
     for node, neighbors in graph_dict.items():
+        G.add_node(node)
         for neighbor in neighbors:
-            G.add_edge(node.table, neighbor.table)
+            G.add_edge(node, neighbor)
     return G
 
 

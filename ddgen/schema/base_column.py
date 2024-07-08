@@ -16,14 +16,14 @@ class BaseColumn(ABC):
     def __init__(
         self,
         name,
-        col_type: DataType,
+        dtype: DataType,
         is_primary=False,
         is_nullable=False,
         percentage=5,
     ):
         self._id = generate_uuid_as_str()
         self.name = name
-        self.col_type = col_type
+        self.dtype = dtype
         self.is_primary = is_primary
         self.is_nullable = is_nullable
         self.percentage = percentage

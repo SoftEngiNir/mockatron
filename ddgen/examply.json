@@ -1,0 +1,189 @@
+{
+    "tables": [
+      {
+        "name": "users",
+        "columns": [
+          {
+            "name": "id",
+            "dtype": "integer",
+            "is_primary": true,
+            "is_nullable": false
+          },
+          {
+            "name": "username",
+            "type": "string",
+            "is_primary": false,
+            "is_nullable": false
+          },
+          {
+            "name": "email",
+            "type": "string",
+            "is_primary": false,
+            "is_nullable": false
+          },
+          {
+            "name": "created_at",
+            "type": "timestamp",
+            "is_primary": false,
+            "is_nullable": false
+          }
+        ]
+      },
+      {
+        "name": "posts",
+        "columns": [
+          {
+            "name": "id",
+            "type": "integer",
+            "is_primary": true,
+            "is_nullable": false
+          },
+          {
+            "name": "user_id",
+            "type": "integer",
+            "is_primary": false,
+            "is_nullable": false,
+            "foreign_key": {
+              "table": "users",
+              "column": "id"
+            }
+          },
+          {
+            "name": "title",
+            "type": "string",
+            "is_primary": false,
+            "is_nullable": false
+          },
+          {
+            "name": "content",
+            "type": "text",
+            "is_primary": false,
+            "is_nullable": true
+          },
+          {
+            "name": "created_at",
+            "type": "timestamp",
+            "is_primary": false,
+            "is_nullable": false
+          }
+        ]
+      },
+      {
+        "name": "comments",
+        "columns": [
+          {
+            "name": "id",
+            "type": "integer",
+            "is_primary": true,
+            "is_nullable": false
+          },
+          {
+            "name": "post_id",
+            "type": "integer",
+            "is_primary": false,
+            "is_nullable": false,
+            "foreign_key": {
+              "table": "posts",
+              "column": "id"
+            }
+          },
+          {
+            "name": "user_id",
+            "type": "integer",
+            "is_primary": false,
+            "is_nullable": false,
+            "foreign_key": {
+              "table": "users",
+              "column": "id"
+            }
+          },
+          {
+            "name": "content",
+            "type": "text",
+            "is_primary": false,
+            "is_nullable": false
+          },
+          {
+            "name": "created_at",
+            "type": "timestamp",
+            "is_primary": false,
+            "is_nullable": false
+          }
+        ]
+      },
+      {
+        "name": "likes",
+        "columns": [
+          {
+            "name": "user_id",
+            "type": "integer",
+            "is_primary": true,
+            "is_nullable": false,
+            "foreign_key": {
+              "table": "users",
+              "column": "id"
+            }
+          },
+          {
+            "name": "post_id",
+            "type": "integer",
+            "is_primary": true,
+            "is_nullable": false,
+            "foreign_key": {
+              "table": "posts",
+              "column": "id"
+            }
+          },
+          {
+            "name": "created_at",
+            "type": "timestamp",
+            "is_primary": false,
+            "is_nullable": false
+          }
+        ]
+      },
+      {
+        "name": "tags",
+        "columns": [
+          {
+            "name": "id",
+            "type": "integer",
+            "is_primary": true,
+            "is_nullable": false
+          },
+          {
+            "name": "name",
+            "type": "string",
+            "is_primary": false,
+            "is_nullable": false,
+            "unique": true
+          }
+        ]
+      },
+      {
+        "name": "post_tags",
+        "columns": [
+          {
+            "name": "post_id",
+            "type": "integer",
+            "is_primary": true,
+            "is_nullable": false,
+            "foreign_key": {
+              "table": "posts",
+              "column": "id"
+            }
+          },
+          {
+            "name": "tag_id",
+            "type": "integer",
+            "is_primary": true,
+            "is_nullable": false,
+            "foreign_key": {
+              "table": "tags",
+              "column": "id"
+            }
+          }
+        ]
+      }
+    ]
+  }

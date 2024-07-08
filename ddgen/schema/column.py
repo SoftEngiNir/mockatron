@@ -14,7 +14,7 @@ class Column(BaseColumn):
     def __init__(
         self,
         name,
-        col_type: DataType,
+        dtype: DataType,
         engine: Engine | None = None,
         is_primary=False,
         is_nullable=False,
@@ -22,7 +22,7 @@ class Column(BaseColumn):
     ):
         super().__init__(
             name,
-            col_type=col_type,
+            dtype=dtype,
             is_nullable=is_nullable,
             percentage=percentage,
         )
@@ -31,7 +31,7 @@ class Column(BaseColumn):
 
     def generate_data(self, n_rows: int) -> np.ndarray:
         if not self.engine:
-            self.engine = DEFAULT_ENGINES[self.col_type]()
+            self.engine = DEFAULT_ENGINES[self.dtype]()
 
         self.data = data_from_engine(self.engine, n_rows)
         if self.is_nullable:
@@ -44,21 +44,21 @@ class ForeignKey(BaseColumn):
         self,
         name,
         source_col: BaseColumn,
-        r_type=RelationshipType.one_to_many,
+        rtype=RelationshipType.one_to_many,
         is_nullable=False,
         percentage=5,
     ):
         super().__init__(
             name,
-            col_type=source_col.col_type,
+            dtype=source_col.dtype,
             is_nullable=is_nullable,
             percentage=percentage,
         )
         self.source_col = source_col
-        self.r_type = r_type
+        self.rtype = rtype
 
     def generate_data(self, n_rows: int) -> np.ndarray:
-        self.data = fk_data(self.source_col.data, n_rows, self.r_type)
+        self.data = fk_data(self.source_col.data, n_rows, self.rtype)
         if self.is_nullable:
             self.data = add_nones(self.data, self.percentage)
         return self.data
@@ -69,13 +69,13 @@ class RelatedColumn(BaseColumn):
         self,
         name,
         source_col: BaseColumn,
-        r_type,
+        rtype,
         is_nullable=False,
         percentage=5,
     ):
-        super().__init__(name, source_col.col_type, is_nullable, percentage)
+        super().__init__(name, source_col.dtype, is_nullable, percentage)
         self.source_col = source_col
-        self.r_type = r_type
+        self.rtype = rtype
         self.source_pk = (
             self.source_col.table.primary_key if self.source_col.table else None
         )

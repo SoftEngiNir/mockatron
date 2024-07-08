@@ -8,7 +8,7 @@ from ddgen.schema.column import ForeignKey
 from ddgen.schema.database import Database
 from ddgen.schema.table import Table
 
-COL_TYPE_MAP = {
+DTYPE_MAP = {
     DataType._int: 'INT',
     DataType._str: 'VARCHAR',
     DataType._date: 'DATE',
@@ -37,7 +37,7 @@ def create_table_sql(table: Table) -> str:
     for col in table.columns:
         not_null = 'NOT NULL' if not col.is_nullable else ''
         statements.append(
-            f'    {col.name} {COL_TYPE_MAP.get(col.col_type)} {not_null},',
+            f'    {col.name} {DTYPE_MAP.get(col.dtype)} {not_null},',
         )
 
     col_str = '\n'.join(statements).strip()
@@ -71,7 +71,7 @@ def table_post_setup_sql(table: Table) -> str:
 
 
 def get_ddl(database: Database) -> str:
-    create_schema = [create_schema_sql(database.schema_name)]
+    create_schema = [create_schema_sql(database.schema)]
     create_tables = []
     post_setup = []
     for table in database.tables:

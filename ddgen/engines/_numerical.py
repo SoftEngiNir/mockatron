@@ -3,14 +3,11 @@ from __future__ import annotations
 from typing import Union
 
 from ddgen.engines.base import NumpyEngine
+from ddgen.engines.registry import register_engine
+from ddgen.utilities.helper_functions import get_numeric_value
 
 
-def get_numeric_value(value, is_int: bool) -> int | float:
-    if is_int:
-        return int(value)
-    return value
-
-
+@register_engine
 class NumericalNormalDistEngine(NumpyEngine[Union[int, float]]):
     def __init__(self, mean=0, std=1, is_int=False):
         """Returns a normally distributed value"""
@@ -24,6 +21,7 @@ class NumericalNormalDistEngine(NumpyEngine[Union[int, float]]):
         return get_numeric_value(value, self.is_int)
 
 
+@register_engine
 class NumericalUniformDistEngine(NumpyEngine[Union[int, float]]):
     def __init__(self, low=0, high=1, is_int=False):
         """Returns a uniformaly distributed value"""
@@ -37,6 +35,7 @@ class NumericalUniformDistEngine(NumpyEngine[Union[int, float]]):
         return get_numeric_value(value, self.is_int)
 
 
+@register_engine
 class NumericalExponentialDistEngine(NumpyEngine[Union[int, float]]):
     def __init__(self, scale=1.0, is_int=False):
         """Returns an exponential distributed value"""
@@ -49,6 +48,7 @@ class NumericalExponentialDistEngine(NumpyEngine[Union[int, float]]):
         return get_numeric_value(value, self.is_int)
 
 
+@register_engine
 class NumericalBinomialDistEngine(NumpyEngine[Union[int, float]]):
     def __init__(self, n=1, p=0.5, is_int=False):
         """Returns a binomialy distributed value"""
@@ -62,6 +62,7 @@ class NumericalBinomialDistEngine(NumpyEngine[Union[int, float]]):
         return get_numeric_value(value, self.is_int)
 
 
+@register_engine
 class NumericalPoissonDistEngine(NumpyEngine[Union[int, float]]):
     def __init__(self, lam=1.0, is_int=False):
         """Returns a poisson distributed value"""
