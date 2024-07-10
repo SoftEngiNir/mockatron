@@ -55,7 +55,7 @@ The engines here are the basic data generators for the Column types. Here I leve
 
 1. Define your database is a `config.json` file according to the model rules defined in `ddgen/models.py`
 
-2. Adjust the main file to include your the path to your gjson file.
+2. Adjust the main file to include your the path to your json file.
 
 3. Adjust the csv_output_path and/or db_connection_details to write to csv or your running db.
 
