@@ -8,7 +8,7 @@ Mockatron is a Python-based tool designed to create realistic and customizable m
 
 - **Customizable Data Generation**: Create realistic mock data for different database schemas.
 - **Relational data**: Create different types of relationships, for example - user.creation_date comes before order.purchase_date
-- **DDL**: Autogenerates the ddl and to create the database tables and relationships.
+- **DDL**: Autogenerates the ddl to create the database tables and relationships.
 - **Writers**: Write to csv or directly into your databse.
 - **Flexible Configuration**: Easily configure the data generation process using a JSON file.
 - **Extensible**: Add custom data generation functions.
@@ -26,11 +26,11 @@ Currently there are 3 types of columns that each generates data in a different w
 
 2. ForeignKey - Can be either one_to_one or one_to_many (default).
 
-3. RelatedColumn - custom type of relationship (see `ddgen.enums.py` for the different `RelationshipType`), for example can be used to define a chronological order between dates.
+3. RelatedColumn - custom type of relationship (see `ddgen/enums.py` for the different `RelationshipType`), for example can be used to define a chronological order between dates.
 
 ## Engines
 
-The engines here are the basic data generators for the Column types. Here I leverage 3 libraries to use as a base engine for all engines - random, faker and numpy. The premise of the engines is that they implement the `sample` method that returns a single value of a certain type. They are meant to be small, light so that it's easy to create your own engines and use them.
+The engines here are the basic data generators for the Column types. Here I leverage 3 libraries to use as a base engine for all engines - random, faker and numpy. The premise of the engines is that they implement the `sample` method that returns a single value of a certain type. They are meant to be small, light so that it's easy to create your own engines and use them. (See `ddgen/engines`)
 
 ## Installation
 
@@ -53,13 +53,15 @@ The engines here are the basic data generators for the Column types. Here I leve
 
 ### Basic Usage
 
-1. Define your database is a `config.json` file according to the model rules defined in `ddgen.models.py`
+1. Define your database is a `config.json` file according to the model rules defined in `ddgen/models.py`
 
-2. Adjust the main file to include your
+2. Adjust the main file to include your json file.
 
-2. Run main script:
+3. Adjust the csv_output_path and/or db_connection_details to write to csv or your running db.
+
+4. Run main script:
     ```bash
-    python ddgen.main.py --config config.json
+    python ddgen.main.py
     ```
 
 ### Configuration File Example (config.json)
@@ -67,33 +69,46 @@ The engines here are the basic data generators for the Column types. Here I leve
 
 ```json
 {
-    "database": {
-        "type": "postgres",
-        "host": "localhost",
-        "port": 3306,
-        "username": "root",
-        "password": "password",
-        "database_name": "mock_db"
-    },
-    "tables": {
-        "users": {
-            "columns": {
-                "id": "integer",
-                "name": "string",
-                "email": "email",
-                "created_at": "datetime"
-            },
-            "row_count": 100
+  "tables": [
+    {
+      "name": "users",
+      "nrows": 30,
+      "columns": [
+        {
+          "name": "id",
+          "dtype": "integer",
+          "is_primary": true,
+          "engine": {
+            "name": "IntPrimaryKeyEngine"
+          }
         },
-        "orders": {
-            "columns": {
-                "id": "integer",
-                "user_id": "integer",
-                "product": "string",
-                "price": "float",
-                "order_date": "datetime"
-            },
-            "row_count": 500
+        {
+          "name": "name",
+          "dtype": "string",
+          "engine": {
+            "name": "StrNameEngine"
+          }
+        },
+        {
+          "name": "email",
+          "dtype": "string",
+          "engine": {
+            "name": "StrEmailEngine"
+          }
+        },
+        {
+          "name": "created_at",
+          "dtype": "timestamp",
+          "engine": {
+            "name": "DateTimeRandEngine",
+            "config": {
+              "start_datetime": "2000-01-01T01:00:00+0000",
+              "end_datetime": "2024-07-07T18:22:39+0000"
+            }
+          }
         }
+      ]
     }
+  ]
 }
+```
