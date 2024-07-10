@@ -2,6 +2,7 @@
   "tables": [
     {
       "name": "users",
+      "nrows": 30,
       "columns": [
         {
           "name": "id",
@@ -40,6 +41,7 @@
     },
     {
       "name": "products",
+      "nrows": 20,
       "columns": [
         {
           "name": "id",
@@ -100,6 +102,7 @@
     },
     {
       "name": "orders",
+      "nrows": 50,
       "columns": [
         {
           "name": "id",

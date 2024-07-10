@@ -4,37 +4,29 @@ from ddgen.utilities.connection import (ConnectionDetails,
                                         session_context)
 from ddgen.utilities.database_builder import DatabaseBuilder
 from ddgen.utilities.readers import read_json_to_db_model
-from ddgen.utilities.schema_utils import get_table_by_name
 from ddgen.utilities.sql import execute_raw_sql, get_ddl
 from ddgen.utilities.writers import write_to_csv, write_to_db
 
+# Read database model from JSON file
 db_model = read_json_to_db_model(path='examples/example.json')
+
+# Initialize DatabaseBuilder and build the database
 builder = DatabaseBuilder()
 database = builder.build(db_model)
 
+# Get the number of rows for each table
+table_nrows = builder.get_table_nrows()
 
-USERS = get_table_by_name(database, 'users')
-PRODUCTS = get_table_by_name(database, 'products')
-ORDERS = get_table_by_name(database, 'orders')
-
-
+# Initialize DummyGenerator with the database
 generator = DummyGenerator(database)
 
-# Define the number of rows from each table
-table_nrows = {
-    USERS: 30,
-    PRODUCTS: 20,
-    ORDERS: 70,
-}
-
-# Provide a path to write the csv files to
-path = ''
+# Generate the dummy data and write it to CSV files
+csv_output_path = ''  # Provide the path to write the CSV files to
 generator.generate(table_nrows)
-write_to_csv('path', database)
+write_to_csv(csv_output_path, database)
 
-
-# Provide connectin details of your db to write the data directly into you db
-DB_CNXT = ConnectionDetails(
+# Define connection details for the database
+db_connection_details = ConnectionDetails(
     username='',
     host='localhost',
     port=5432,
@@ -42,18 +34,18 @@ DB_CNXT = ConnectionDetails(
     password='',
 )
 
-TEST_ENGINE = create_engine_postgres(DB_CNXT)
+# Create a PostgreSQL engine
+db_engine = create_engine_postgres(db_connection_details)
 
-# The session context creaetes the database schema
-with session_context(engine=TEST_ENGINE) as session:
-    ddl = get_ddl(database)
-    # print(ddl)
-    execute_raw_sql(session, ddl)
+# Create the database schema and write the fake data to the database
+with session_context(engine=db_engine) as session:
+    ddl_statements = get_ddl(database)
+    execute_raw_sql(session, ddl_statements)
 
-# Writes the fake data into your database
-write_to_db(TEST_ENGINE, database)
+# Write the fake data into the database
+write_to_db(db_engine, database)
 
-# Will create a vizualiztion of the database tables and relationships (dependencies)
-# from ddgen.utilities.graph import construct_graph, vizualize_graph
+# Optional: Visualize the database tables and relationships (dependencies)
+# from ddgen.utilities.graph import construct_graph, visualize_graph
 # graph = construct_graph(database.graph_dict)
-# vizualize_graph(graph)
+# visualize_graph(graph)

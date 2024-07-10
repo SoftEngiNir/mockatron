@@ -35,9 +35,10 @@ class ColumnModel(BaseModel):
 
 class TableModel(BaseModel):
     name: str
+    nrows: int
     columns: list[ColumnModel]
 
 
 class DatabaseModel(BaseModel):
     tables: list[TableModel]
-    schema: Optional[str]
+    _schema: Optional[str]

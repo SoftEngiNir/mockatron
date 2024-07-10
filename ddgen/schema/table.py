@@ -15,7 +15,6 @@ class Table:
     ) -> None:
         self.id = generate_uuid_as_str()
         self.name = name
-        self.foreign_keys: Sequence[BaseColumn] = []
         self.primary_key: BaseColumn | None = None
         self.columns = [self.add_column(col) for col in columns]
         self.schema = schema
