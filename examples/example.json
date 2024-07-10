@@ -1,0 +1,140 @@
+{
+  "tables": [
+    {
+      "name": "users",
+      "columns": [
+        {
+          "name": "id",
+          "dtype": "integer",
+          "is_primary": true,
+          "engine": {
+            "name": "IntPrimaryKeyEngine"
+          }
+        },
+        {
+          "name": "name",
+          "dtype": "string",
+          "engine": {
+            "name": "StrNameEngine"
+          }
+        },
+        {
+          "name": "email",
+          "dtype": "string",
+          "engine": {
+            "name": "StrEmailEngine"
+          }
+        },
+        {
+          "name": "created_at",
+          "dtype": "timestamp",
+          "engine": {
+            "name": "DateTimeRandEngine",
+            "config": {
+              "start_datetime": "2000-01-01T01:00:00+0000",
+              "end_datetime": "2024-07-07T18:22:39+0000"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "products",
+      "columns": [
+        {
+          "name": "id",
+          "dtype": "integer",
+          "is_primary": true,
+          "engine": {
+            "name": "IntPrimaryKeyEngine"
+          }
+        },
+        {
+          "name": "name",
+          "dtype": "string",
+          "engine": {
+            "name": "StrFromListEngine",
+            "config": {
+              "selection": [
+                "Headphones",
+                "Water Bottle",
+                "LED Bulbs",
+                "Toothbrush",
+                "Power Bank",
+                "Earbuds",
+                "Security Camera",
+                "Robot Vacuum",
+                "Air Purifier",
+                "Fitness Band",
+                "Laptop",
+                "Smartphone",
+                "Tablet",
+                "Smartwatch",
+                "Gaming Console",
+                "Digital Camera",
+                "Bluetooth Speaker",
+                "External Hard Drive",
+                "USB Flash Drive",
+                "Wireless Mouse",
+                "Mechanical Keyboard",
+                "Webcam",
+                "Smart Thermostat"
+              ],
+              "replace": false
+            }
+          }
+        },
+        {
+          "name": "price",
+          "dtype": "integer",
+          "engine": {
+            "name": "NumericalNormalDistEngine",
+            "config": {
+              "mean": 100,
+              "std": 10,
+              "is_int": true
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "orders",
+      "columns": [
+        {
+          "name": "id",
+          "dtype": "integer",
+          "is_primary": true,
+          "engine": {
+            "name": "IntPrimaryKeyEngine"
+          }
+        },
+        {
+          "name": "user_id",
+          "dtype": "integer",
+          "foreign_key": {
+            "table": "users",
+            "source_col": "id"
+          }
+        },
+        {
+          "name": "product_id",
+          "dtype": "integer",
+          "foreign_key": {
+            "table": "products",
+            "source_col": "id"
+          }
+        },
+        {
+          "name": "created_at",
+          "related_column": {
+            "table": "users",
+            "source_col": "created_at",
+            "rtype": "after"
+
+          }
+        }
+      ]
+    }
+  ]
+}

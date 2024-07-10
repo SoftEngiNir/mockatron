@@ -11,6 +11,12 @@ class ForeignKeyModel(BaseModel):
     rtype: Optional[RelationshipType] = RelationshipType.one_to_many
 
 
+class RelatedColumnModel(BaseModel):
+    table: str
+    source_col: str
+    rtype: str
+
+
 class EngineModel(BaseModel):
     name: str
     config: Optional[dict] = None
@@ -18,12 +24,13 @@ class EngineModel(BaseModel):
 
 class ColumnModel(BaseModel):
     name: str
-    dtype: str
+    dtype: Optional[str] = None
     engine: Optional[EngineModel] = None
     is_primary: Optional[bool] = False
     is_nullable: Optional[bool] = False
     percentage: Optional[int] = 5
     foreign_key: Optional[ForeignKeyModel] = None
+    related_column: Optional[RelatedColumnModel] = None
 
 
 class TableModel(BaseModel):

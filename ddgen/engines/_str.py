@@ -22,6 +22,33 @@ class StrRandEngine(RandEngine[str]):
 
 
 @register_engine
+class StrFromListEngine(RandEngine[str]):
+    def __init__(
+        self,
+        selection: list[str],
+        replace: bool = True,
+        cum_weights: list[int] | None = None,
+    ) -> None:
+        super().__init__()
+        self.selection = selection
+        self.replace = replace
+        self.cum_weights = cum_weights
+        if not self.replace:
+            self.used_indices: set = set()
+
+    def sample(self):
+        if not self.replace:
+            if len(self.used_indices) >= len(self.selection):
+                raise ValueError('No more unique elements to sample')
+
+            available_indices = set(range(len(self.selection))) - self.used_indices
+            chosen_index = self._engine.choice(list(available_indices))
+            self.used_indices.add(chosen_index)
+            return self.selection[chosen_index]
+        return self._engine.choices(self.selection, cum_weights=self.cum_weights)[0]
+
+
+@register_engine
 class StrNameEngine(FakerEngine[str]):
     def sample(self):
         return self._engine.name()
@@ -55,18 +82,3 @@ class StrEmailEngine(FakerEngine[str]):
 class StrUuidEngine(Engine[str]):
     def sample(self):
         return generate_uuid_as_str()
-
-
-@register_engine
-class StrFromListEngine(RandEngine[str]):
-    def __init__(
-        self,
-        selection: list[str],
-        cum_weights: list[int] | None = None,
-    ) -> None:
-        super().__init__()
-        self.selection = selection
-        self.cum_weights = cum_weights
-
-    def sample(self):
-        return self._engine.choices(self.selection, cum_weights=self.cum_weights)[0]

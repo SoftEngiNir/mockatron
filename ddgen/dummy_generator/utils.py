@@ -66,7 +66,10 @@ RELATIONSHIP_CONFIGS: Final[dict[RelationshipType, dict]] = {
     RelationshipType.before: {'func': date_delta, 'kwargs': {'before': True}},
 }
 
-NUMPY_DTYPE = {DataType._date: 'datetime64[D]'}
+NUMPY_DTYPE = {
+    DataType._date: 'datetime64[D]',
+    DataType._datetime: 'datetime64[D]',
+}
 
 
 def related_data(column: RelatedColumn, n_rows: int) -> np.ndarray:
