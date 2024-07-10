@@ -12,13 +12,13 @@ def to_df(table: Table) -> pd.DataFrame:
     return pd.DataFrame(table_data)
 
 
-def csv_dump(path: str, database: Database) -> None:
+def write_to_csv(path: str, database: Database) -> None:
     for table in database:
         table_df = to_df(table)
         table_df.to_csv(f'{path}/{table.name}.csv', index=False)
 
 
-def db_dump(engine: Engine, database: Database) -> None:
+def write_to_db(engine: Engine, database: Database) -> None:
     for table in database.tables:
         df = to_df(table)
         df.to_sql(
