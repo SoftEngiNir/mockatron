@@ -111,7 +111,6 @@
         },
         {
           "name": "user_id",
-          "dtype": "integer",
           "foreign_key": {
             "table": "users",
             "source_col": "id"
@@ -119,7 +118,6 @@
         },
         {
           "name": "product_id",
-          "dtype": "integer",
           "foreign_key": {
             "table": "products",
             "source_col": "id"

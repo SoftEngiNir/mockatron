@@ -63,6 +63,7 @@ class ColumnFactory:
     def _create_standard_column(col_model: ColumnModel) -> Column:
         if col_model.dtype is None:
             raise ValueError('Column dtype is None')
+
         dtype = COL_TYPE[col_model.dtype]
         engine = ColumnFactory._get_engine(col_model, dtype)
         return Column(

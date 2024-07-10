@@ -39,11 +39,11 @@ csv_dump('dummy_data', database)
 
 
 TEST_DB_CNXT = ConnectionDetails(
-    username='',
+    username='postgres',
     host='localhost',
-    port=5432,
+    port=26552,
     dbname='postgres',
-    password='',
+    password='test',
 )
 
 TEST_ENGINE = create_engine_postgres(TEST_DB_CNXT)
