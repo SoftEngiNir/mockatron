@@ -6,6 +6,7 @@ from collections.abc import Iterator
 from ddgen.schema.column import ForeignKey
 from ddgen.schema.table import Table
 from ddgen.utilities.graph import construct_graph, sorted_in_degree
+from ddgen.utilities.sql import _get_ddl
 
 
 class Database:
@@ -38,3 +39,6 @@ class Database:
     def get_table_dependencies(self) -> dict[int, list[Table]]:
         graph = construct_graph(self.graph_dict)
         return sorted_in_degree(graph)
+
+    def get_ddl(self) -> str:
+        return _get_ddl(self)

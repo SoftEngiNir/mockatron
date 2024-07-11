@@ -4,7 +4,7 @@ from ddgen.utilities.connection import (ConnectionDetails,
                                         session_context)
 from ddgen.utilities.database_builder import DatabaseBuilder
 from ddgen.utilities.readers import read_json_to_db_model
-from ddgen.utilities.sql import execute_raw_sql, get_ddl
+from ddgen.utilities.sql import execute_raw_sql
 from ddgen.utilities.writers import write_to_csv, write_to_db
 
 # Read database model from JSON file
@@ -39,8 +39,8 @@ db_engine = create_engine_postgres(db_connection_details)
 
 # Create the database schema and write the fake data to the database
 with session_context(engine=db_engine) as session:
-    ddl_statements = get_ddl(database)
-    execute_raw_sql(session, ddl_statements)
+
+    execute_raw_sql(session, database.get_ddl())
 
 # Write the fake data into the database
 write_to_db(db_engine, database)

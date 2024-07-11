@@ -1,12 +1,16 @@
 from __future__ import annotations
 
+from typing import TYPE_CHECKING
+
 from sqlalchemy import text
 from sqlalchemy.orm import Session
 
 from ddgen.enums import DataType
 from ddgen.schema.column import ForeignKey
-from ddgen.schema.database import Database
 from ddgen.schema.table import Table
+
+if TYPE_CHECKING:
+    from ddgen.schema.database import Database
 
 DTYPE_MAP = {
     DataType._int: 'INT',
@@ -70,7 +74,7 @@ def table_post_setup_sql(table: Table) -> str:
     return '\n'.join(statements).strip()
 
 
-def get_ddl(database: Database) -> str:
+def _get_ddl(database: Database) -> str:
     create_schema = [create_schema_sql(database.schema)]
     create_tables = []
     post_setup = []
