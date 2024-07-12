@@ -53,66 +53,24 @@ The engines here are the basic data generators for the Column types. Here I leve
 
 ### Basic Usage
 
-1. Define your database is a `config.json` file according to the model rules defined in `ddgen/models.py`
+1. Create `config.json` file.
 
-2. Adjust the main file to include your the path to your json file.
+2. Configure the file to define your database according to the model rules defined in `ddgen/models.py`
 
-3. Edit the `connection.json` file to point to your database.
+3. Adjust the main file to include the path to your json file.
 
-4. Create a `dummy_data/` directory in the base path.
+4. Edit the [connection.json](connection.json) file to point to your database.
 
-5. Adjust the csv_output_path to write to_csv.
+5. Create a `dummy_data/` directory in the base path.
 
-6. Run main script:
+6. Adjust the csv_output_path to write to_csv.
+
+7. Run main script:
     ```bash
     python ddgen.main.py
     ```
 
 ### Configuration File Example (config.json)
 
-
-```json
-{
-  "tables": [
-    {
-      "name": "users",
-      "nrows": 30,
-      "columns": [
-        {
-          "name": "id",
-          "dtype": "integer",
-          "is_primary": true,
-          "engine": {
-            "name": "IntPrimaryKeyEngine"
-          }
-        },
-        {
-          "name": "name",
-          "dtype": "string",
-          "engine": {
-            "name": "StrNameEngine"
-          }
-        },
-        {
-          "name": "email",
-          "dtype": "string",
-          "engine": {
-            "name": "StrEmailEngine"
-          }
-        },
-        {
-          "name": "created_at",
-          "dtype": "timestamp",
-          "engine": {
-            "name": "DateTimeRandEngine",
-            "config": {
-              "start_datetime": "2000-01-01T01:00:00+0000",
-              "end_datetime": "2024-07-07T18:22:39+0000"
-            }
-          }
-        }
-      ]
-    }
-  ]
-}
-```
+See
+[config.json](examples/example.json)
