@@ -1,8 +1,8 @@
 import json
 
-from ddgen.models import DatabaseModel
+from pydantic import BaseModel
 
 
-def read_json_to_db_model(path: str) -> DatabaseModel:
+def model_from_json(path: str, model: BaseModel) -> BaseModel:
     with open(path) as f:
-        return DatabaseModel.model_validate(json.load(f))
+        return model.model_validate(json.load(f))

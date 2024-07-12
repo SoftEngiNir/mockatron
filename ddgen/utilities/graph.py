@@ -25,7 +25,7 @@ def sorted_in_degree(graph: nx.DiGraph) -> dict[int, list[Table]]:
     return {k: table_in_deg[k] for k in sorted(table_in_deg)}
 
 
-def vizualize_graph(graph: nx.DiGraph) -> None:
+def visualize_graph(graph: nx.DiGraph) -> None:
     pos = nx.spring_layout(graph)
     nx.draw(
         graph,

@@ -2,20 +2,19 @@ from __future__ import annotations
 
 from collections.abc import Generator
 from contextlib import contextmanager
-from typing import NamedTuple
 
+from pydantic import BaseModel
 from sqlalchemy import create_engine
 from sqlalchemy.engine import Engine
 from sqlalchemy.orm import Session, sessionmaker
 
 
-class ConnectionDetails(NamedTuple):
+class ConnectionDetails(BaseModel):
     username: str
     host: str | None = 'localhost'
     port: int | None = 5432
     dbname: str | None = 'postgres'
     password: str | None = 'admin'
-    schema: str | None = ''
 
 
 def create_engine_postgres(cnxn: ConnectionDetails) -> Engine:

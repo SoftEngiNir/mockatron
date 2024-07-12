@@ -19,6 +19,7 @@ class Database:
         self.graph_dict: dict[Table, list[Table]] = defaultdict(list)
         self.tables = []
         self.tables = [self.add_table(table) for table in tables]
+        self.table_nrows: dict[Table, int] = {}
 
     def __iter__(self) -> Iterator[Table]:
         return iter(self.tables)

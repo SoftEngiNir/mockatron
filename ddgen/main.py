@@ -1,51 +1,56 @@
 from ddgen.dummy_generator.generator import DummyGenerator
+from ddgen.models import DatabaseModel
+from ddgen.schema.database import Database
 from ddgen.utilities.connection import (ConnectionDetails,
                                         create_engine_postgres,
                                         session_context)
-from ddgen.utilities.database_builder import DatabaseBuilder
-from ddgen.utilities.readers import read_json_to_db_model
+from ddgen.utilities.model_mappers import database_from_model
+from ddgen.utilities.readers import model_from_json
 from ddgen.utilities.sql import execute_raw_sql
 from ddgen.utilities.writers import write_to_csv, write_to_db
 
-# Read database model from JSON file
-db_model = read_json_to_db_model(path='examples/example.json')
 
-# Initialize DatabaseBuilder and build the database
-builder = DatabaseBuilder()
-database = builder.build(db_model)
+def main():
+    # File paths
+    db_model_path = 'examples/example.json'
+    connection_details_path = 'connection.json'
+    csv_output_path = 'dummy_data'
 
-# Get the number of rows for each table
-table_nrows = builder.get_table_nrows()
+    # Read database model from JSON file and create the database object
+    db_model = model_from_json(path=db_model_path, model=DatabaseModel)
+    database = database_from_model(db_model)
 
-# Initialize DummyGenerator with the database
-generator = DummyGenerator(database)
+    # Initialize DummyGenerator with the database
+    generator = DummyGenerator(database)
 
-# Generate the dummy data and write it to CSV files
-csv_output_path = ''  # Provide the path to write the CSV files to
-generator.generate(table_nrows)
-write_to_csv(csv_output_path, database)
+    # Generate the dummy data
+    generator.generate()
 
-# Define connection details for the database
-db_connection_details = ConnectionDetails(
-    username='',
-    host='localhost',
-    port=5432,
-    dbname='postgres',
-    password='',
-)
+    # Write generated data to CSV files
+    write_to_csv(csv_output_path, database)
 
-# Create a PostgreSQL engine
-db_engine = create_engine_postgres(db_connection_details)
+    # Read database connection details from JSON file
+    db_connection_details = model_from_json(path=connection_details_path, model=ConnectionDetails)
 
-# Create the database schema and write the fake data to the database
-with session_context(engine=db_engine) as session:
+    # Create a PostgreSQL engine
+    db_engine = create_engine_postgres(db_connection_details)
 
-    execute_raw_sql(session, database.get_ddl())
+    # Create the database schema
+    with session_context(engine=db_engine) as session:
+        execute_raw_sql(session, database.get_ddl())
 
-# Write the fake data into the database
-write_to_db(db_engine, database)
+    # Write the fake data into the database
+    write_to_db(db_engine, database)
 
-# Optional: Visualize the database tables and relationships (dependencies)
-# from ddgen.utilities.graph import construct_graph, visualize_graph
-# graph = construct_graph(database.graph_dict)
-# visualize_graph(graph)
+    # Optional: Visualize the database tables and relationships (dependencies)
+    # visualize_database_schema(database)
+
+
+def visualize_database_schema(database: Database):
+    from ddgen.utilities.graph import construct_graph, visualize_graph
+    graph = construct_graph(database.graph_dict)
+    visualize_graph(graph)
+
+
+if __name__ == '__main__':
+    main()

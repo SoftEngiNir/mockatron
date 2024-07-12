@@ -14,6 +14,8 @@ class DummyGenerator:
         pass
 
     def generate(self, table_nrows: dict[Table, int] = {}):
+        if not table_nrows:
+            table_nrows = self.database.table_nrows
         table_dependencies = self.database.get_table_dependencies()
         for tables in table_dependencies.values():
             for table in tables:
