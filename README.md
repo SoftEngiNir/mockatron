@@ -7,7 +7,7 @@ Mockatron is a Python-based tool designed to create realistic and customizable m
 ## Features
 
 - **Customizable Data Generation**: Create realistic mock data for different database schemas.
-- **Relational data**: Create different types of relationships, for example - user.creation_date comes before order.purchase_date
+- **Relational data**: Create different types of relationships (Not only Foreign keys), for example - user.creation_date comes before order.purchase_date
 - **DDL**: Autogenerates the ddl to create the database tables and relationships.
 - **Writers**: Write to csv or directly into your databse.
 - **Flexible Configuration**: Easily configure the data generation process using a JSON file.
@@ -57,9 +57,13 @@ The engines here are the basic data generators for the Column types. Here I leve
 
 2. Adjust the main file to include your the path to your json file.
 
-3. Adjust the csv_output_path and/or db_connection_details to write to csv or your running db.
+3. Edit the `connection.json` file to point to your database.
 
-4. Run main script:
+4. Create a `dummy_data/` directory in the base path.
+
+5. Adjust the csv_output_path to write to_csv.
+
+6. Run main script:
     ```bash
     python ddgen.main.py
     ```

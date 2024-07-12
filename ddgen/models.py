@@ -41,4 +41,4 @@ class TableModel(BaseModel):
 
 class DatabaseModel(BaseModel):
     tables: list[TableModel]
-    _schema: Optional[str]
+    schema_name: str = 'public'

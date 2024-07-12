@@ -12,9 +12,9 @@ def table_from_model(table_model: TableModel, database: Database):
     return Table(table_model.name, columns)
 
 
-def database_from_model(db_model: DatabaseModel, schema: str = 'public') -> Database:
+def database_from_model(db_model: DatabaseModel) -> Database:
     table_nrows: dict = {}
-    database = Database(schema=schema)
+    database = Database(schema=db_model.schema_name)
     for table_model in db_model.tables:
         table = table_from_model(table_model, database)
         database.add_table(table)

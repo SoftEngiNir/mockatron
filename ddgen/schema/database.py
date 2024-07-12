@@ -12,7 +12,7 @@ from ddgen.utilities.sql import _get_ddl
 class Database:
     def __init__(
         self,
-        schema: str,
+        schema: str = 'public',
         tables: list[Table] = [],
     ) -> None:
         self.schema = schema
