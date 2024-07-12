@@ -1,8 +1,9 @@
 {
+  "schema_name": "public",
   "tables": [
     {
       "name": "users",
-      "nrows": 30,
+      "nrows": 40,
       "columns": [
         {
           "name": "id",
